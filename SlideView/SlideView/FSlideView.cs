@@ -12,9 +12,66 @@ namespace SlideView
 {
     public partial class FSlideView : Form
     {
-        public FSlideView()
+        readonly string[] Images;
+        private int Index = 0;
+
+        public FSlideView(string[] images)
         {
             InitializeComponent();
+            Images = images;
+            LoadNextImage(0);
+        }
+
+        void LoadNextImage(int idx)
+        {
+            if ((idx < 0) || (idx >= Images.Length)) return;
+            try
+            {
+                Image tmp = pbImage.Image;
+                var img = Bitmap.FromFile(Images[Index]);
+                pbImage.Image = img;
+                tmp?.Dispose();
+                Text = $"{Index + 1} / {Images.Length}";
+            }
+            catch
+            { }
+        }
+
+        private void SlideView_KeyPress(object sender, KeyPressEventArgs e)
+        {
+        }
+
+        private void SlideView_KeyDown(object sender, KeyEventArgs e)
+        {
+            switch (e.KeyCode)
+            {
+                case Keys.Space:
+                case Keys.Right:
+                    GotoNextImage();
+                    break;
+                case Keys.Back:
+                case Keys.Left:
+                    GotoPreviousImage();
+                    break;
+
+            }
+        }
+
+        private void GotoPreviousImage()
+        {
+            if (Index > 0)
+            {
+                LoadNextImage(Index--);
+            }
+        }
+
+        private void GotoNextImage()
+        {
+            if (Index < Images.Length - 1)
+            {
+                LoadNextImage(Index++);
+            }
+
         }
     }
 }
