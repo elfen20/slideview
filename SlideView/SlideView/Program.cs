@@ -1,6 +1,8 @@
 ﻿using Cave.IO;
 using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Text;
 using System.Windows.Forms;
 
 namespace SlideView
@@ -21,17 +23,13 @@ namespace SlideView
                 Console.WriteLine("SlideShow");
                 Console.WriteLine("shows images in a directory or listed in a textfile");
                 Console.WriteLine("usage:");
-                Console.WriteLine("slideshow drive://somedir");
+                Console.WriteLine("slideshow [drive:]/somepath/somedir");
                 Console.WriteLine("slideshow somefile.ext");
                 Console.WriteLine("options: -r randomize images list");
                 Console.WriteLine("options: -s include subdirs (recursive)");
                 return;
             }
 
-            if (args.IsOptionPresent("f"))
-            {
-
-            }
             string[] images = null;
             string param1 = args.Parameters[0];
             try
@@ -45,6 +43,23 @@ namespace SlideView
                 }
                 if (File.Exists(param1))
                 {
+                    var il = new List<string>();
+                    string[] lines = File.ReadAllLines(param1);
+                    foreach (string s in lines)
+                    {
+                        if (File.Exists(s))
+                        {
+                            il.Add(s);
+                            continue;
+                        }
+                        string p = Path.Combine(Path.GetDirectoryName(param1), s);
+                        if (File.Exists(p))
+                        {
+                            il.Add(p);
+                            continue;
+                        }
+                    }
+                    images = il.ToArray();
                 }
 
                 if ((images != null) && (images.Length > 0))
