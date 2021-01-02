@@ -22,9 +22,9 @@ namespace SlideView
             LoadNextImage(0);
         }
 
-        void LoadNextImage(int idx)
+        bool LoadNextImage(int idx)
         {
-            if ((idx < 0) || (idx >= Images.Length)) return;
+            if ((idx < 0) || (idx >= Images.Length)) return false;
             try
             {
                 Image tmp = pbImage.Image;
@@ -32,9 +32,11 @@ namespace SlideView
                 pbImage.Image = img;
                 tmp?.Dispose();
                 Text = $"{Index + 1} / {Images.Length}";
+                return true;
             }
             catch
             { }
+            return false;
         }
 
         private void SlideView_KeyPress(object sender, KeyPressEventArgs e)
@@ -81,19 +83,29 @@ namespace SlideView
 
         private void GotoPreviousImage()
         {
-            if (Index > 0)
+            bool done = false;
+            while (!done)
             {
-                LoadNextImage(Index--);
+                if (Index > 0)
+                {
+                    done = LoadNextImage(Index--);
+                }
+                else
+                { break; }
             }
         }
 
         private void GotoNextImage()
         {
-            if (Index < Images.Length - 1)
+            bool done = false;
+            while (!done)
             {
-                LoadNextImage(Index++);
+                if (Index < Images.Length - 1)
+                {
+                    done = LoadNextImage(Index++);
+                }
+                else { break; }
             }
-
         }
     }
 }
