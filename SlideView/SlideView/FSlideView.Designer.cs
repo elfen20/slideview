@@ -52,6 +52,7 @@ namespace SlideView
             this.Controls.Add(this.pbImage);
             this.Name = "FSlideView";
             this.Text = "Slide";
+            this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.SlideView_KeyDown);
             ((System.ComponentModel.ISupportInitialize)(this.pbImage)).EndInit();
             this.ResumeLayout(false);
 

@@ -53,7 +53,29 @@ namespace SlideView
                 case Keys.Left:
                     GotoPreviousImage();
                     break;
+                case Keys.Return:
+                    if (e.Alt)
+                    {
+                        ToggleFullScreen();
+                    }
+                    break;
+                case Keys.Escape:
+                    Close();
+                    break;
+            }
+        }
 
+        private void ToggleFullScreen()
+        {
+            if (FormBorderStyle == FormBorderStyle.Sizable)
+            {
+                FormBorderStyle = FormBorderStyle.None;
+                WindowState = FormWindowState.Maximized;
+            }
+            else
+            {
+                FormBorderStyle = FormBorderStyle.Sizable;
+                WindowState = FormWindowState.Normal;
             }
         }
 
